@@ -53,7 +53,7 @@ Everything is estimated with information available on the valuation date only:
 
 ### 4. Strike mapping and pricing
 
-Quoted strikes are in ACWI-ETF terms (e.g. \$85). Each component option keeps the same moneyness as the ACWI option: `K_i = S_i · K / S_ACWI`, using traded prices.
+Quoted strikes are in ACWI-ETF terms (e.g. \$85). Each component option keeps the same moneyness as the ACWI option: `K_i = S_i · K / S_ACWI`, using traded prices. The synthetic index is a value-weighted basket that trades near \$268, so it is rescaled to the ACWI share (× S_ACWI/S_syn ≈ 0.33) before quoting; every price below is therefore in ACWI-ETF terms. Proportional payoffs (call, spread) carry that factor; the digital's fixed \$1 payoff and all deltas are scale-free and do not.
 
 Three options are priced with Black–Scholes with continuous dividend yield as of 2023-02-24 and marked to market daily over their whole life, per component and aggregated into the synthetic quote with the regression weights:
 
@@ -65,7 +65,7 @@ Three options are priced with Black–Scholes with continuous dividend yield as 
 
 ### 5. Basket of options vs option on the basket
 
-A linear combination of options is not an option on the linear combination. For convex payoffs (the vanilla call), Jensen's inequality plus imperfect correlations make the basket of calls worth more than the call on the synthetic index; the basket super-replicates it, and the gap is the correlation premium embedded in the quote (\$1.25 on the 9-month call). For non-convex payoffs (the digital, the capped spread) the inequality does not apply and the sign can flip, as the notebook's comparison table shows. The implied volatility backed out of the basket quote by root-finding (Brent's method) is **21.9%** vs the basket's own 20.4% historical vol.
+A linear combination of options is not an option on the linear combination. For convex payoffs (the vanilla call), Jensen's inequality plus imperfect correlations make the basket of calls worth more than the call on the synthetic index; the basket super-replicates it, and the gap is the correlation premium embedded in the quote (\$0.41 on the 9-month call). For non-convex payoffs (the digital, the capped spread) the inequality does not apply and the sign can flip, as the notebook's comparison table shows. The implied volatility backed out of the basket quote by root-finding (Brent's method) is **21.9%** vs the basket's own 20.4% historical vol.
 
 ### 6. Validation: realized backtest and Monte Carlo
 
@@ -75,9 +75,9 @@ Each option is sold at its basket quote and delta-hedged daily with the syntheti
 
 | Option | Price (hist. vol) | Price (EWMA vol) | Realized hedge P&L (% premium) |
 |---|---|---|---|
-| Call 9m, K = \$85 | \$28.18 | \$23.84 | +18.6% |
+| Call 9m, K = \$85 | \$9.26 | \$7.83 | +18.6% |
 | Digital call 9m, K = \$87 | \$0.52 | \$0.55 | −35.9% |
-| Call spread 12m, K = \$78/\$100 | \$31.97 | \$33.40 | −28.7% |
+| Call spread 12m, K = \$78/\$100 | \$10.50 | \$10.97 | −28.7% |
 
 Monte Carlo, short call 9m at the historical-vol quote: mean P&L **0.0% ± 4.2%** of premium when realized vol equals the quoted vol, and **+18.2%** (5th percentile +7.4%) when realized vol equals the EWMA, consistent with the +18.6% actually realized over 2023, when volatility came in well below the 20% quoted. The digital's loss is the expected behavior of concentrated gamma near the strike, the reason desks quote digitals with an extra margin or replicate them with a tight call spread. Per-component prices, deltas, daily mark-to-market series and all charts are in the notebook.
 
