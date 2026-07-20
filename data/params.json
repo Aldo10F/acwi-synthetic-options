@@ -1,0 +1,18 @@
+{
+  "start": "2018-02-24",
+  "end": "2024-02-24",
+  "valuation_date": "2023-02-24",
+  "tickers": [
+    "IVV",
+    "EWJ",
+    "EWU",
+    "MCHI",
+    "EWC",
+    "EWQ",
+    "EWG",
+    "EWL",
+    "INDA",
+    "EWT"
+  ],
+  "r_usd": 0.050499999999999996
+}
